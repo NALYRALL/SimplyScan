@@ -1,0 +1,33 @@
+{
+    "findings": [
+        {
+            "header": "Content-Security-Policy",
+            "severity": "info",
+            "status": "present"
+        },
+        {
+            "header": "X-Frame-Options",
+            "severity": "info",
+            "status": "present"
+        },
+        {
+            "header": "X-Content-Type-Options",
+            "severity": "info",
+            "status": "present"
+        },
+        {
+            "header": "Strict-Transport-Security",
+            "severity": "info",
+            "status": "present"
+        }
+    ],
+    "https": true,
+    "security_headers": {
+        "Content-Security-Policy": "base-uri 'self';object-src 'none';script-src 'nonce-GoDqljrIptyW49S4X9D2zg' 'unsafe-inline' 'strict-dynamic' https: http: 'unsafe-eval';report-uri https://csp.withgoogle.com/csp/youtube_main/strict, require-trusted-types-for 'script'",
+        "Strict-Transport-Security": "max-age=31536000",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN"
+    },
+    "status_code": 200,
+    "url": "https://www.youtube.com"
+}
