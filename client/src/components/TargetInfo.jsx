@@ -1,25 +1,34 @@
-function TargetInfo({ result }) {
+function TargetInfo({ result = {} }) {
+  const summary = result.summary || {};
+
   return (
-    <div className="target-info">
-      <h2>Target Information</h2>
+    <section className="section target-info">
+      <div className="section-heading">
+        <h2>Target Information</h2>
+        <span>Scan target</span>
+      </div>
 
       <div className="target-grid">
         <div>
           <span>Target</span>
-          <strong>{result.target}</strong>
+          <strong className="break-text">
+            {result.target || "Unknown"}
+          </strong>
         </div>
 
         <div>
           <span>Pages Scanned</span>
-          <strong>{result.summary.pages_scanned}</strong>
+          <strong>{summary.pages_scanned || 0}</strong>
         </div>
 
         <div>
           <span>Scan Status</span>
-          <strong>Completed</strong>
+          <strong className="status-completed">
+            Completed
+          </strong>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
