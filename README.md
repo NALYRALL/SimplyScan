@@ -137,7 +137,7 @@ The Python scanner exposes its own `GET /health` endpoint in the current local i
 
 ## Configuration
 
-Example environment files are provided for local setup. Copy the relevant `.env.example` to `.env` and adjust values for your environment. Never commit real secrets or populated `.env` files.
+Example environment files document the variables used by each service. The current services read environment variables from the process or hosting platform; they do not automatically load `.env` files. Set variables in your terminal or hosting provider. Never commit real secrets or populated `.env` files.
 
 | Variable | Used by | Purpose |
 |---|---|---|
