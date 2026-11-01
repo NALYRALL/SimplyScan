@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "simplyscan-server",
   "version": "1.0.0",
   "description": "Express API gateway for SimplyScan",
   "main": "server.js",

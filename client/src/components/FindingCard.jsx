@@ -1,47 +1,56 @@
-import FindingCard from "./FindingCard";
-
-function Findings({ pages }) {
-  const findings = pages.flatMap((page) =>
-    (page.findings || []).map((finding) => ({
-      ...finding,
-      pageUrl: page.url,
-    }))
-  );
-
-  const groupedFindings = {
-    high: findings.filter((finding) => finding.severity === "high"),
-    medium: findings.filter((finding) => finding.severity === "medium"),
-    low: findings.filter((finding) => finding.severity === "low"),
-    info: findings.filter((finding) => finding.severity === "info"),
-  };
+function FindingCard({ finding = {} }) {
+  const severity = String(
+    finding.severity || "info"
+  ).toLowerCase();
 
   return (
-    <div className="findings">
-      <h2>Security Findings</h2>
+    <article className="finding-card">
+      <div className="finding-content">
+        <div className="finding-title-row">
+          <strong>
+            {finding.title ||
+              finding.type ||
+              "Security Finding"}
+          </strong>
 
-      {findings.length === 0 && (
-        <p>No findings detected.</p>
-      )}
+          <span className={`severity ${severity}`}>
+            {severity}
+          </span>
+        </div>
 
-      {Object.entries(groupedFindings).map(
-        ([severity, severityFindings]) =>
-          severityFindings.length > 0 && (
-            <div className="finding-section" key={severity}>
-              <h3 className={`section-title ${severity}`}>
-                {severity.toUpperCase()} ({severityFindings.length})
-              </h3>
+        <p>
+          {finding.description ||
+            finding.message ||
+            finding.detail ||
+            "No additional details available."}
+        </p>
 
-              {severityFindings.map((finding, index) => (
-                <FindingCard
-                  key={index}
-                  finding={finding}
-                />
-              ))}
-            </div>
-          )
-      )}
-    </div>
+        <div className="finding-meta">
+          {finding.type && (
+            <small>Type: {finding.type}</small>
+          )}
+
+          {finding.status_code && (
+            <small>
+              Status: {finding.status_code}
+            </small>
+          )}
+
+          {finding.url && (
+            <small className="break-text">
+              URL: {finding.url}
+            </small>
+          )}
+
+          {finding.pageUrl && (
+            <small className="break-text">
+              Page: {finding.pageUrl}
+            </small>
+          )}
+        </div>
+      </div>
+    </article>
   );
 }
 
-export default Findings;
+export default FindingCard;
