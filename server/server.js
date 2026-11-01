@@ -11,8 +11,9 @@ const SCANNER_URL = (
 ).replace(/\/$/, "");
 
 const allowedOrigins = (
-    process.env.CLIENT_URL || "http://localhost:5173"
-).split(",").map(origin => origin.trim());
+    process.env.CLIENT_URL ||
+    "http://localhost:5173,https://simply-scan-gray.vercel.app"
+).split(",").map(origin => origin.trim());  
 
 app.use(cors({
     origin: (origin, callback) => {
