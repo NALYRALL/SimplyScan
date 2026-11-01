@@ -26,12 +26,12 @@ The browser communicates with the Node API. The Node service forwards scan reque
 ## Features
 
 - Submit a website URL for scanning.
-- Crawl a limited number of same-domain pages.
+- Crawl a limited number of same-domain pages (up to five in the current configuration).
 - Inspect selected HTTP security headers.
 - Review cookie security attributes when cookies are returned.
 - Identify selected HTML and form configuration observations.
 - Detect HTTP resources on HTTPS pages (mixed content).
-- Inspect redirect information and selected same-domain links.
+- Review redirect information and selected same-domain links.
 - View findings grouped by severity.
 - Review per-page scan details.
 - Keep a small scan history in browser local storage.
@@ -59,11 +59,7 @@ SimplyScan/
 
 ## Prerequisites
 
-Install:
-
-- Node.js (LTS recommended) and npm
-- Python 3.10 or newer
-- Git
+Install Node.js (LTS recommended) and npm, Python 3.10 or newer, and Git.
 
 ## Local Setup
 
@@ -98,7 +94,7 @@ npm install
 npm start
 ```
 
-The API listens on port `5000` by default. Configure the scanner URL with the `SCANNER_URL` environment variable when the scanner is not running at `http://127.0.0.1:5001`.
+The API listens on port `5000` by default. Set `SCANNER_URL` when the Python scanner is not running at `http://127.0.0.1:5001`.
 
 ### 3. React frontend
 
@@ -116,15 +112,18 @@ For a deployed frontend, set `VITE_API_URL` to the base URL of the deployed Node
 
 ## API
 
-### Health check
+### Node API
 
-`GET /` on the Node API returns a basic service status response.
+- `GET /` — basic API status.
+- `GET /health` — backend and scanner health, when enabled in the running backend version.
+- `POST /scan` — submit a scan request.
 
-### Scan a website
+Example request:
 
-`POST /scan`
-
-Request body:
+```http
+POST /scan
+Content-Type: application/json
+```
 
 ```json
 {
@@ -132,18 +131,21 @@ Request body:
 }
 ```
 
-The API returns a JSON scan result containing the target, summary counts, and scanned page details. A scan can take several seconds depending on the target and the checks performed.
+The response is JSON containing the target, summary counts, and scanned page details. A scan can take several seconds depending on the target and checks performed.
+
+The Python scanner exposes its own `GET /health` endpoint in the current local implementation.
 
 ## Configuration
 
+Example environment files are provided for local setup. Copy the relevant `.env.example` to `.env` and adjust values for your environment. Never commit real secrets or populated `.env` files.
+
 | Variable | Used by | Purpose |
 |---|---|---|
-| `PORT` | Node / scanner | Port to bind to; platform hosts commonly provide this automatically |
+| `PORT` | Node / scanner | Port to bind to; hosting platforms may provide this automatically |
 | `SCANNER_URL` | Node | Base URL of the Python scanner |
-| `CLIENT_URL` | Node | Allowed frontend origin(s) when CORS is configured |
+| `CLIENT_URL` | Node | Allowed frontend origin(s) for CORS |
+| `FRONTEND_ORIGIN` | Scanner | Frontend origin, if scanner-level CORS is used |
 | `VITE_API_URL` | Vite client | Base URL of the Node API |
-
-Do not commit real credentials, API keys, or private environment files. Use your hosting provider's environment-variable settings for deployment.
 
 ## Development Notes
 
@@ -154,7 +156,7 @@ Do not commit real credentials, API keys, or private environment files. Use your
 
 ## Limitations
 
-SimplyScan currently provides a bounded set of passive checks. It does not perform authenticated testing, exploit validation, brute force, or comprehensive vulnerability assessment. Results depend on what the target exposes to unauthenticated HTTP requests.
+SimplyScan currently provides a bounded set of passive checks. It does not perform authenticated testing, exploit validation, brute force, or a comprehensive vulnerability assessment. Results depend on what the target exposes to unauthenticated HTTP requests.
 
 ## License
 
